@@ -46,49 +46,59 @@ $(document).ready(function () {
     //allows us to view the current sentence at the top of the page
     $('#sentence').text(currentSentence);
     var letter = currentSentence.charAt(0);
-    $('#target-letter').text(letter);
-    var letterNumber =0;
+
+    let letterNumber = 0;
+    $('#target-letter').text(letter)
 
 
-
-var startTimer;
-var wrong = 0;
+    var startTimer;
+    var endTimer;
+    var wrong = 0;
 
     //function for changing the letters after typed   
     $(document).keypress(function (e) {
         e.preventDefault();
-        letterNumber++;
-        
-        //console.log(letter);
-        $('#target-letter').text(letter);
-        //console.log(letterNumber)
-        var letter = currentSentence.charAt(letterNumber);
 
-        if(!startTimer){  //if the variable doesn't have any value, replace it with the time stamp
-            start =e.timeStamp;
-        } 
-        if(e.which == currentSentence.charCodeAt(currentSentence.charAt(letterNumber))){
-            
-            $('#feedback').append('<span class="glyphicon glyphicon-ok"></span>');
-            $('.correct').css('color', 'green');
-        }else{
-            $('#feedback').append('<span class="glyphicon glyphicon-remove"></span>');
-            $('.incorrect').css('color', 'green');
-            wrong++;
+
+        if (!startTimer) {  //if the variable doesn't have any value, replace it with the time stamp
+            startTimer = e.timeStamp;
         }
-        
-       /* 
-        letterNumber++;
-        letter = currentSentence.charAt(letterNumber);
-        //console.log(letter);
-        $('#target-letter').text(letter);
-        //console.log(letterNumber)
-        var letter = currentSentence.charAt(letterNumber);
 
-*/
+             if (e.which == currentSentence.charCodeAt(letterNumber)) {
+                letterNumber++;
+                letter = currentSentence.charAt(letterNumber);
+                $('#target-letter').text(letter)
+                $('#feedback').append('<span class="glyphicon glyphicon-ok"></span>');
+            }   
+             else {
+            $('#feedback').append('<span class="glyphicon glyphicon-remove"></span>');
+            wrong++;
+            }
+             
+                if (letterNumber == currentSentence.length) {
+                    letterNumber = 0;
+                    sentenceNumber++;
+                    
+                    
+                    currentSentence = sentences[sentenceNumber];
+                    letter = currentSentence.charAt(letterNumber);
+                    $('#sentence').text(currentSentence);
+                    
+                    $('#target-letter').text(letter)
+                    console.log(letter);
+                }
+                    
+                    if (sentenceNumber == sentences.length) {
+                        endTimer = e.timeStamp;
+                        var deltaTime = (endTimer - startTimer) / (60 * 1000);
+                        var wpm = Math.round(54 / deltaTime - 2 * wrong);
+                        alert(`you typed ${deltaTime} words per minute`)
+                    }
 
 
-        
+
+
+
 
     });
 

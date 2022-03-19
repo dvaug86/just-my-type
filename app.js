@@ -54,6 +54,8 @@ $(document).ready(function () {
     var startTimer;
     var endTimer;
     var wrong = 0;
+    var cursor = $('#yellow-block');
+    var cursorPlace = 0;
 
     //function for changing the letters after typed   
     $(document).keypress(function (e) {
@@ -69,6 +71,8 @@ $(document).ready(function () {
                 letter = currentSentence.charAt(letterNumber);
                 $('#target-letter').text(letter)
                 $('#feedback').append('<span class="glyphicon glyphicon-ok"></span>');
+                cursorPlace += 17.2;
+                $(cursor).css("margin-left", cursorPlace + "px");
             }   
              else {
             $('#feedback').append('<span class="glyphicon glyphicon-remove"></span>');
@@ -79,13 +83,15 @@ $(document).ready(function () {
                     letterNumber = 0;
                     sentenceNumber++;
                     
-                    
                     currentSentence = sentences[sentenceNumber];
                     letter = currentSentence.charAt(letterNumber);
                     $('#sentence').text(currentSentence);
                     
                     $('#target-letter').text(letter)
                     console.log(letter);
+                    cursorPlace =0;
+                    $(cursor).css("margin-left", cursorPlace + "px");
+
                 }
                     
                     if (sentenceNumber == sentences.length) {
@@ -95,7 +101,21 @@ $(document).ready(function () {
                         alert(`you typed ${deltaTime} words per minute`)
                     }
 
+/*
+                    setTimeout(function(){
+                        if(confirm('would you like to play again?')) {
+                          sentenceNumber = 0;
+                          letterNumber = 0;
+                          currentSentence = sentences[0];
+                          currentLetter = currentSentence.charAt(0);
+                          $('#sentence').text(currentSentence);
+                          $('#target-letter').text(currentLetter);
+                          $('#feedback').empty();
+                          startTime = undefined;
+                        }
+                      }, 5000); // 5000 means this will run for 5 seconds
 
+*/
 
 
 
